@@ -1,0 +1,16 @@
+
+@import url('https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css');
+
+.site-header{box-shadow:0 0 15px rgba(0,0,0,.3);}
+.site-footer{text-align:center;border-top:thin solid #e3e3e3;}
+.middle-content{min-height:calc(100vh - 140px)}
+
+.card-login{max-width:404px;}
+
+table tr.rowclick{cursor:pointer;}
+
+.ant-modal-close{color:white;background:#5e5e5e;}
+.ant-modal-close-x{width:35px;height:35px;font-style:normal;line-height:30px;}
+
+.ql-editor{height:150px;}
+.srv-validation-message{color:red;}
