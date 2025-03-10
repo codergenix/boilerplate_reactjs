@@ -1,49 +1,144 @@
-import moment from 'moment';
-
-const loginexpire = () => {
-    let currentday = moment().format('YYYY-MM-DD');
-    let logintime = localStorage.getItem('ReactloginTime');
-    if (moment(logintime).isBefore(currentday)) {
-        logout();
+//----
+const authToken = () => {
+    try {
+        const userInfo = JSON.parse(sessionStorage.getItem('webAppUser'))
+        if (userInfo?.token) {
+            return userInfo.token
+        }
+        return null
+    } catch (error) {
+        console.error('try catch [service.authToken] error.message :', error.message);
+        return null;
     }
-    return true;
 }
-const getlogin = () => {
-    if(localStorage.ReactisLogin){
-      loginexpire();    
-    }
-    return localStorage.getItem('ReactisLogin');
-}
-const getUserid = () => {
-    return localStorage.getItem('ReactuserId');
-}
-const getUserData = () => {
-    let getdata = localStorage.getItem('ReactuserData');
-    if (getdata) {
-        return JSON.parse(getdata);
+const authHeader = () => {
+    try {
+        const token = authToken()
+        return { Authorization: `Bearer ${token}` }
+    } catch (error) {
+        console.error('try catch [service.authHeader] error.message :', error.message);
+        return false;
     }
 }
 
-const logout = async () => {
-    //await localStorage.clear();
-    await localStorage.setItem('ReactloginTime', '');
-    await localStorage.setItem('ReactisLogin', '');
-    await localStorage.setItem('Reactstatus', 'logout');
-    await localStorage.setItem('Reacttoken', '');
-    await localStorage.setItem('ReactuserData', '');
-    await localStorage.setItem('ReactuserId', '');
-    await window.location.reload(false);
-    return true;
+const Getlogin = async () => {
+    try {
+        const token = authToken()
+        return !!token;
+    } catch (error) {
+        console.error('try catch [service.Getlogin] error.message :', error.message);
+        return false;
+    }
 }
 
-const htmltoText = (htmlsting) => {
-    if (htmlsting)
-        return <span dangerouslySetInnerHTML={{ __html: `${htmlsting.replace(/<[^>]+>/g, '')}` }}></span>;
-}
-const texttohtml = (htmlsting) => {
-    if (htmlsting)
-        return <div dangerouslySetInnerHTML={{ __html: `${htmlsting}` }}></div>;
+const getLoginData = () => {
+    try {
+        return JSON.parse(sessionStorage.getItem('webAppUser'))
+    } catch (error) {
+        console.error('try catch [service.getLoginData] error.message :', error.message);
+        return {};
+    }
 }
 
-const Service = { getUserid, getlogin, logout, getUserData, htmltoText, texttohtml };
+const Logout = () => {
+    try {
+        sessionStorage.removeItem('webAppUser');
+        window.location.href = "/login";
+        return true;
+    } catch (error) {
+        console.error('try catch [service.Logout] error.message :', error.message);
+        return true;
+    }
+}
+
+const HtmltoText = (htmlsting) => {
+    try {
+        if (htmlsting) {
+            return <span dangerouslySetInnerHTML={{ __html: `${htmlsting.replace(/<[^>]+>/g, '')}` }} />;
+        }
+    } catch (error) {
+        console.error('try catch [service.HtmltoText] error.message :', error.message);
+    }
+}
+const TextTohtml = (htmlsting) => {
+    try {
+        if (htmlsting) {
+            return <div dangerouslySetInnerHTML={{ __html: `${htmlsting}` }} />;
+        }
+    } catch (error) {
+        console.error('try catch [service.TextTohtml] error.message :', error.message);
+    }
+}
+const HtmltagRemove = (htmlsting) => {
+    try {
+        if (htmlsting) {
+            const regexhtmltag = /(<([^>]+)>)/ig;
+            let tagRemove = htmlsting.replace(regexhtmltag, '');
+            let tagremove2 = tagRemove.replace(/\\&nbsp;/g, '');
+            return (tagremove2);
+        }
+    } catch (error) {
+        console.error('try catch [service.TextTohtml] error.message :', error.message);
+    }
+}
+
+function getImageMimeType(base64String) {
+    try {
+        if (base64String?.startsWith("/9j/")) return "image/jpeg";
+        if (base64String?.startsWith("iVBORw0KGg")) return "image/png";
+        if (base64String?.startsWith("R0lGODdh")) return "image/gif";
+        if (base64String?.startsWith("UklGR")) return "image/webp";
+        return "image/png";
+    } catch (error) {
+        console.error('try catch [service.getImageMimeType] error.message :', error.message);
+        return false;
+    }
+}
+const getImageBase64Type = (imgURLstring) => {
+    try {
+        // console.log("getImageBase64Type >> imgURLstring::",imgURLstring);
+        if (imgURLstring == null || imgURLstring == '') {
+            return "./images/user.jpg";
+        }
+        else if (imgURLstring?.startsWith('data:image/') || imgURLstring?.startsWith('/images/') || imgURLstring?.startsWith('http')) {
+            return imgURLstring;
+        } else {
+            const mimeType = getImageMimeType(imgURLstring);
+            return `data:${mimeType};base64,${imgURLstring}`;
+        }
+    } catch (error) {
+        console.error('try catch [service.getImageBase64Type] error.message :', error.message);
+        return imgURLstring
+    }
+}
+const removeImageBase64Type = (imgURLstring) => {
+    try {
+        // console.log("removeImageBase64Type >> imgURLstring::",imgURLstring);
+        if (imgURLstring?.startsWith('data:image/')) {
+            return imgURLstring?.replace(/^data:image\/[a-zA-Z]+;base64,/, '');
+        } else {
+            return imgURLstring;
+        }
+    } catch (error) {
+        console.error('try catch [service.removeImageBase64Type] error.message :', error.message);
+        return imgURLstring;
+    }
+}
+const filetoBase64 = (file, callback = (base64) => console.log(base64)) => {
+    try {
+        const fileReader = new FileReader();
+        fileReader.onload = () => {
+            callback(removeImageBase64Type(fileReader.result));
+        };
+        fileReader.onerror = () => {
+            console.log("filetoBase64 >> onerror::", fileReader);
+        };
+        fileReader.readAsDataURL(file);
+    } catch (error) {
+        console.error('try catch [service.filetoBase64] error.message :', error.message);
+        callback('')
+    }
+}
+
+const Service = { Getlogin, Logout, getLoginData, authHeader, authToken, HtmltoText, TextTohtml, HtmltagRemove, getImageBase64Type, removeImageBase64Type, filetoBase64 };
 export default Service;

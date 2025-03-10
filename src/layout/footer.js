@@ -1,9 +1,12 @@
-import {Container} from 'react-bootstrap';
-
-export default function footer(){
+import dayjs from 'dayjs';
+import React from 'react';
+import { Container } from 'react-bootstrap';
+//---
+const FooterComponent = () => {
     return (
-          <Container className="text-center py-3">
-                  © Copyright 2022 Reactcurd            
-          </Container>
+        <Container className="text-center py-3">
+            © Copyright {dayjs().year()} React
+        </Container>
     );
 }
+export default React.memo(FooterComponent)

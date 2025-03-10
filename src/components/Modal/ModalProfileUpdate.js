@@ -2,40 +2,44 @@ import React from 'react';
 import { Row, Col, Input, Modal, Button, notification, Space, InputNumber, Upload } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import SimpleReactValidator from 'simple-react-validator';
-import { userUpdate, userCreate, frontSelector } from '../../store/Reducer/frontSlice';
+import { frontSelector, updateState, userInfo, profileUpdate } from '../../store/Reducer/frontSlice';
 import { PlusOutlined } from '@ant-design/icons';
 import Service from '../../Utils/service';
 import _ from 'lodash';
 //---
-const ModalUser = ({ open, setOpen, data }) => {
+const ModalUser = ({ open, setOpen }) => {
 	const dispatch = useDispatch();
-	const { isFetchingOBJ } = useSelector(frontSelector);
+	const { loginData, userDetail, isUpdatedProfile, isFetchingOBJ } = useSelector(frontSelector);
 	//---
 	const [Formdata, setFormdata] = React.useState({});
-	const [IsUpdateMode, setIsUpdateMode] = React.useState(false);
 	//---
 	React.useEffect(() => {
-		if (open) {
-			setFormdata(data || {});
-			setIsUpdateMode(!!data.userId)
+		if (open && loginData?.id >= 0) {
+			dispatch(userInfo({ userId: loginData.id }));
 		}
 	}, [open]);
+
+	React.useEffect(() => {
+		if (userDetail.userId) {
+			setFormdata(userDetail);
+		}
+	}, [userDetail]);
+
+	React.useEffect(() => {
+		if (isUpdatedProfile) {
+			notification.success({ message: 'Success', description: `Profile Updated Successfully` });
+			dispatch(updateState({ isUpdatedProfile: '' }));
+			closeModal();
+		}
+	}, [isUpdatedProfile]);
 	//---
 	const [, forceUpdate] = React.useState();
-	let validator = React.useRef(new SimpleReactValidator({
-		messages: {
-			in: 'password and confirm password not matched'
-		}
-	}));
+	let validator = React.useRef(new SimpleReactValidator());
 	validator.current.purgeFields();
 	const handlerSave = () => {
 		if (validator.current.allValid()) {
-			if (!_.isEqual(Formdata, data)) {
-				if (IsUpdateMode) {
-					dispatch(userUpdate(Formdata));
-				} else {
-					dispatch(userCreate(Formdata));
-				}
+			if (!_.isEqual(Formdata, userDetail)) {
+				dispatch(profileUpdate(Formdata));
 			} else {
 				closeModal();
 			}
@@ -71,15 +75,14 @@ const ModalUser = ({ open, setOpen, data }) => {
 			width={970}
 			onCancel={closeModal}
 			open={open}
-			title={`User ${IsUpdateMode ? 'Update' : 'Add'}`}
+			title={`Profile Update`}
 			maskClosable={false}
 			footer={
 				<Space wrap={true}>
 					<Button variant="solid" color="red" onClick={closeModal} >Cancel</Button>
-					<Button variant="solid" color="cyan"
-						loading={isFetchingOBJ['userUpdate'] || isFetchingOBJ['userCreate'] || false}
-						disabled={isFetchingOBJ['userUpdate'] || isFetchingOBJ['userCreate'] || false}
-						onClick={handlerSave} > {IsUpdateMode ? 'Update' : 'Add'} </Button>
+					<Button variant="solid" color="cyan" onClick={handlerSave}
+						loading={isFetchingOBJ['profileUpdate'] || false}
+						disabled={isFetchingOBJ['profileUpdate'] || false} >Update </Button>
 				</Space>
 			}
 		>
@@ -115,28 +118,10 @@ const ModalUser = ({ open, setOpen, data }) => {
 					<Col md={12}>
 						<div className="mb-3">
 							<label className='form-label'>Email</label>
-							<Input placeholder="Email" disabled={false} value={Formdata.email} onChange={e => setFormdata({ ...Formdata, email: e.target.value })} />
+							<Input placeholder="Email" disabled={true} value={Formdata.email} onChange={e => setFormdata({ ...Formdata, email: e.target.value })} />
 							{validator.current.message('email', Formdata.email, 'required|email')}
 						</div>
 					</Col>
-					{!IsUpdateMode &&
-						<>
-							<Col md={12}>
-								<div className="mb-3">
-									<label className='form-label'>Password</label>
-									<Input placeholder="Password" value={Formdata.userPassword} onChange={e => setFormdata({ ...Formdata, userPassword: e.target.value })} />
-									{validator.current.message('Password', Formdata.userPassword, 'required|alpha_num|min:6')}
-								</div>
-							</Col>
-							<Col md={12}>
-								<div className="mb-3">
-									<label className='form-label'>Confirm Password</label>
-									<Input placeholder="Confirm Password" value={Formdata.confirmPassword} onChange={e => setFormdata({ ...Formdata, confirmPassword: e.target.value })} />
-									{validator.current.message('confirmPassword', Formdata.confirmPassword, `required|in:${Formdata.userPassword}`)}
-								</div>
-							</Col>
-						</>
-					}
 					<Col md={24}>
 						<div className="mb-3">
 							<label className='form-label'>Contact</label>

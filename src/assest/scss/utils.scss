@@ -1,0 +1,91 @@
+body{font-size:14px;line-height:18px;color: $gray;font-family: 'Open Sans', sans-serif; background-color:$Alabaster;}
+
+a{color:inherit;}
+.underlinenone:hover,
+.underlinenone{text-decoration:none;}
+.cursor-pointer{cursor:pointer;}
+.clearfix{clear:both;}
+
+.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6,p{color:$MineShaft;}
+
+.border-dashed{border:thin dashed;}
+.overflowY-auto{overflow-y:auto;}
+
+*:focus-visible{outline:none;}
+
+.pt-10{ padding-top: 10px; }
+.pt-20{ padding-top: 20px; }
+.pt-30{ padding-top: 30px; }
+.pt-40{ padding-top: 40px; }
+.pt-50{ padding-top: 50px; }
+
+.pb-10{ padding-bottom: 10px; }
+.pb-20{ padding-bottom: 20px; }
+.pb-30{ padding-bottom: 30px; }
+.pb-40{ padding-bottom: 40px; }
+.pb-50{ padding-bottom: 50px; }
+ 
+.ptb-10{ padding-top: 10px; padding-bottom: 10px; }
+.ptb-25{ padding-top: 25px; padding-bottom: 25px; }
+.ptb-50{ padding-top: 50px; padding-bottom: 50px; }
+.ptb-75{ padding-top: 75px; padding-bottom: 75px; }
+.ptb-100{ padding-top: 100px; padding-bottom: 100px; }
+
+/**** text and bg color  *****/
+.color{
+    &-primary{color:$primary;}
+    &-secondary{color:$secondary;}
+    &-success{color:$success;}
+    &-danger{color:$danger;}
+    &-warning{color:$warning;}
+    &-info{color:$info;}
+    &-light{color:$light;}
+    &-dark{color:$dark;}
+    &-mineshaft{color:$MineShaft;}
+}
+.bg-color{
+    &-transparent{background-color:transparent;}
+    &-primary{background-color:$primary;}
+    &-secondary{background-color:$secondary;}
+    &-success{background-color:$success;}
+    &-danger{background-color:$danger;}
+    &-warning{background-color:$warning;}
+    &-info{background-color:$info;}
+    &-light{background-color:$light;}
+    &-dark{background-color:$dark;}
+}
+.fw{
+    &-300{font-weight:300;}
+    &-400{font-weight:400;}
+    &-500{font-weight:500;}
+    &-600{font-weight:600;}
+    &-700{font-weight:700;}
+    &-800{font-weight:800;}
+    &-900{font-weight:900;}
+}
+.fs{
+    &-12{font-size:12px;}
+    &-13{font-size:13px;}
+    &-14{font-size:14px;}
+    &-15{font-size:15px;}
+    &-16{font-size:16px;}
+    &-17{font-size:17px;}
+    &-18{font-size:18px;}
+    &-20{font-size:20px;}
+    &-22{font-size:22px;}
+    &-24{font-size:24px;}
+    &-26{font-size:26px;}
+    &-28{font-size:28px;}
+    &-30{font-size:30px;}
+    &-32{font-size:32px;}
+    &-34{font-size:34px;}
+    &-36{font-size:36px;}
+    &-38{font-size:38px;}
+    &-40{font-size:40px;}
+}
+.mw{
+    &-410{max-width:410px;}
+    &-450{max-width:450px;}
+    &-680{max-width:680px;}
+    &-990{max-width:990px;}
+}

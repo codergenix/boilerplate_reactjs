@@ -1,29 +1,22 @@
-import React,{Suspense} from 'react';
-import ReactDOM from 'react-dom';
-import {hydrate} from 'react-dom';
-
-
+import React from 'react';
 import reportWebVitals from './reportWebVitals';
-import { loadableReady} from '@loadable/component';
+import { loadableReady } from '@loadable/component';
+import { hydrateRoot } from 'react-dom/client';
 
 import { Provider } from "react-redux";
 import store from "./store/index";
-
-import 'antd/dist/antd.css';
+//----
+import './assest/other.css';
+import 'antd/dist/reset.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-quill/dist/quill.snow.css'
 import './assest/scss/main.scss';
-
-import App from  "./App";
+//---
+import App from "./App";
 
 loadableReady(() => {
-  const root = document.getElementById('root')
-  hydrate(
-    // <React.StrictMode></React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-  , root)
+  const rootcontainer = document.getElementById('root')
+  hydrateRoot(rootcontainer, <Provider store={store}><App /></Provider>)
 })
 
 // ReactDOM.render(

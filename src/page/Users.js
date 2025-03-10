@@ -1,109 +1,126 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Container, Table, Button } from 'react-bootstrap';
-import { Row, Col, Input, Button as AntButton, notification, Space } from 'antd';
+import React from 'react';
+import { Container } from 'react-bootstrap';
+import { Row, Col, Input, Button, notification, Table, Space, Modal, Tooltip, Avatar } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import SimpleReactValidator from 'simple-react-validator';
-
-import { getAllUser, userSelector, setCurrentUser, addUser, setParams, clearState } from '../store/Reducer/user';
+import { RiUserAddLine } from "react-icons/ri";
+import { LiaUserEditSolid } from "react-icons/lia";
+import { AiOutlineUserDelete } from "react-icons/ai";
+import { MdOutlineContentCopy } from "react-icons/md";
+import { userGrid, frontSelector, updateState, userDelete, userCreate } from '../store/Reducer/frontSlice';
 import ModalUser from '../components/Modal/ModalUser';
-export default function Users() {
+import Service from '../Utils/service';
+//---
+const UsersScreen = () => {
 
   const dispatch = useDispatch();
-  const [, forceUpdate] = useState();
-  const { users, currentUser, isAdded, isError, errorMessage } = useSelector(userSelector);
+  const { loginData, users, isUpdatedUser, isUpdatedProfile, isDeletedUser, isAddedUser, isFetchingOBJ } = useSelector(frontSelector);
 
-  const [addUserdata, setAddUserdata] = useState({});
-  const [formdata, setFormdata] = useState({});
-  const [ModalOpen, setModalOpen] = useState(false);
+  const [ModalOpen, setModalOpen] = React.useState(false);
+  const [ModalData, setModalData] = React.useState({});
+  const [searchText, setSearchText] = React.useState(null);
+  const [queryParams,] = React.useState({
+    "order": "ASC",
+    "orderBy": "userId",
+    "pageSize": 20,
+    "search": "",
+    "skip": 0
+  });
+  const reloadApi = () => {
+    dispatch(userGrid({ ...queryParams, search: searchText }));
+  }
+  React.useEffect(() => {
+    reloadApi();
+  }, [searchText]);
 
-  useEffect(() => {
-    dispatch(clearState());
-    dispatch(getAllUser());
-  }, []);
-
-
-  useEffect(() => {
-    if (isError) {
-      notification.error({
-        message: 'Error',
-        description: errorMessage,
-      });
+  React.useEffect(() => {
+    if (isUpdatedUser) {
+      notification.success({ message: 'Success', description: `User is updated successfully` });
+      setModalOpen(false);
+      reloadApi();
     }
-  }, [isError]);
-
-  useEffect(() => {
-    if (isAdded) {
-      setFormdata(currentUser);
-      setModalOpen(true);
+    dispatch(updateState({ isUpdatedUser: '' }));
+  }, [isUpdatedUser]);
+  React.useEffect(() => {
+    if (isUpdatedProfile) {
+      reloadApi();
     }
-    dispatch(setParams({ isAdded: '' }));
-  }, [isAdded]);
-
-  const rowclick = async (obj) => {
-    setCurrentUser(obj);
-    setFormdata(obj);
+  }, [isUpdatedProfile]);
+  React.useEffect(() => {
+    if (isAddedUser) {
+      notification.success({ message: 'Success', description: `User is Created successfully` });
+      setModalOpen(false);
+      reloadApi();
+    }
+    dispatch(updateState({ isAddedUser: '' }));
+  }, [isAddedUser]);
+  React.useEffect(() => {
+    if (isDeletedUser) {
+      notification.success({ message: 'Success', description: `User is Deleted successfully` });
+      setModalOpen(false);
+    }
+    dispatch(updateState({ isDeletedUser: '' }))
+  }, [isDeletedUser]);
+  const handlerAdd = () => {
     setModalOpen(true);
+    setModalData({});
   }
-
-  let validator = useRef(new SimpleReactValidator());
-  const handleAddSubmit = () => {
-    if (validator.current.allValid()) {
-      dispatch(addUser(addUserdata));
-    } else {
-      validator.current.showMessages();
-      forceUpdate(1);
-    }
+  const handlerEditItem = (item) => {
+    setModalOpen(true);
+    setModalData(item);
   }
+  const handlerCopyItem = (item) => {
+    dispatch(userCreate({...item,userPassword:"123456"}));
+  }
+  const handlerDeleteItem = (item) => {
+    Modal.confirm({
+      title: `Are you sure you want to delete?`,
+      content: `${item.name}`,
+      okText: `Ok`,
+      cancelText: `Cancel`,
+      onOk() {
+        dispatch(userDelete(item));
+      },
+    });
+  }
+  //---
 
   return (
     <Container>
-      <h2 className="text-center">User list</h2>
-      <Row gutter={16} align="middle" justify="space-between">
-        <Col flex={1}>
-          <div className="mb-2">
-            <Input placeholder="Email id" value={addUserdata.Email} onPressEnter={handleAddSubmit} onChange={e => setAddUserdata({ ...addUserdata, Email: e.target.value })} />
-            {validator.current.message('Email', addUserdata.Email, 'required|email')}
-          </div>
-        </Col>
-        <Col flex={1}>
-          <div className="mb-2">
-            <Input placeholder="Password" value={addUserdata.Password} onPressEnter={handleAddSubmit} onChange={e => setAddUserdata({ ...addUserdata, Password: e.target.value })} />
-            {validator.current.message('Password', addUserdata.Password, 'required')}
-          </div>
-        </Col>
-        <Col>
-          <div className="mb-2 text-right pr-4">
-            <Space>
-              <Button variant="success" size="md" type="button" onClick={handleAddSubmit} ><i className="far fa-save"></i></Button>
-            </Space>
-          </div>
-        </Col>
-      </Row>
-
-      <Table responsive>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {(users).map((user, index) => (
-            <tr key={index} className='rowclick' onClick={() => rowclick(user)}>
-              <td> {user.FirstName} </td>
-              <td> {user.LastName} </td>
-              <td> {user.Email} </td>
-            </tr>
-          ))}
-        </tbody>
+      <div className='mb-3'>
+        <Row justify="space-between">
+          <Col>
+            <Input.Search
+              allowClear
+              placeholder="search"
+              onSearch={(value) => setSearchText(value?.trim())}
+            />
+          </Col>
+          <Col>
+            <Button variant='dashed' color='primary' icon={<RiUserAddLine />} onClick={handlerAdd}> Add </Button>
+          </Col>
+        </Row>
+      </div>
+      <Table dataSource={users || []} rowKey='userId' loading={isFetchingOBJ['userGrid'] || false}>
+        <Table.Column key="avatar" title="AVATAR" render={(record) => <Avatar size={50} shape="circle" src={Service.getImageBase64Type(record.avatar)} >{record?.name?.charAt(0)}</Avatar>} />
+        <Table.Column key="name" title="NAME" dataIndex={'name'} />
+        <Table.Column key="email" title="EMAIL" dataIndex={'email'} render={(value) => <a href={`mailto:${value}?subject=Hello&body=Content here...`}> {value} </a>} />
+        <Table.Column key="contact" title="CONTACT" dataIndex={'contact'} render={(value) => <a href={`tel:${value}`}>{value}</a>} />
+        <Table.Column key="action" title="ACTION" width={130} render={(record) =>
+          loginData.id != record.userId && <Space>
+            <Tooltip title="Edit User" color="cyan"><Button color="cyan" variant="outlined" icon={<LiaUserEditSolid />} onClick={() => handlerEditItem(record)} /> </Tooltip>
+            <Tooltip title="Delete User" color="red"><Button color="red" variant="outlined" icon={<AiOutlineUserDelete />} onClick={() => handlerDeleteItem(record)} /> </Tooltip>
+            {/* <Tooltip title="Copy" color="green"><Button color="green" variant="outlined" icon={<MdOutlineContentCopy  />} onClick={() => handlerCopyItem(record)} /> </Tooltip> */}
+          </Space>
+        }
+        />
       </Table>
       <ModalUser
-        isOpen={ModalOpen}
-        oncloseModal={setModalOpen}
-        data={formdata}
+        open={ModalOpen}
+        setOpen={setModalOpen}
+        data={ModalData}
       />
     </Container>
   )
 
 }
+export default React.memo(UsersScreen)

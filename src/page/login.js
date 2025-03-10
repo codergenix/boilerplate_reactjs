@@ -1,91 +1,96 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link ,useNavigate} from 'react-router-dom';
-import { Card, Form, Image } from 'react-bootstrap';
-import { Input, Button as AntButton,notification } from 'antd';
-import moment from 'moment';
-import Service from '../Utils/service';
-
+import React from 'react';
+import { Card } from 'react-bootstrap';
+import { Input, Button, notification, Checkbox } from 'antd';
 import SimpleReactValidator from 'simple-react-validator';
 import { useSelector, useDispatch } from 'react-redux';
 // import _ from 'lodash';
-import { loginUser, loginSelector, clearState } from '../store/Reducer/login';
-
-const Login = (props) => {
+import { loginUser, frontSelector, updateState } from '../store/Reducer/frontSlice';
+import Service from '../Utils/service';
+const LoginScreen = (props) => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const { isLogin, isFetching, isError,errorMessage } = useSelector(loginSelector);
-
-	const [, forceUpdate] = useState();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	
-	useEffect(()=>{
-		var loginstatus = Service.getlogin();
-			if (loginstatus) {
-		   		navigate('/user');
-			}
-	  },[])
-
-	useEffect(() => {
+	const { isLogin, isFetchingOBJ, isError, errorMessage } = useSelector(frontSelector);
+	//----
+	const [formdata, setFormdata] = React.useState({
+		email: localStorage.getItem('rememberedEmail') || '',
+		password: localStorage.getItem('rememberedPassword') || '',
+		rememberMe: localStorage.getItem('rememberedRememberMe')=="true" || false,
+	});
+	//---
+	const LoginCheck = async () => {
+		let isloginn = await Service.Getlogin();
+		if (isloginn) {
+			window.location.href = "/";
+		}
+	}
+	React.useEffect(() => {
+		LoginCheck();
+	}, [])
+	React.useEffect(() => {
 		if (isError) {
-			dispatch(clearState());
-			notification.error({
-				message: 'Error',
-				description:errorMessage,
-			});
+			notification.error({ message: 'Error', description: errorMessage });
+			dispatch(updateState({ isError: false,errorMessage:'' }));
 		}
+	}, [isError]);
+	React.useEffect(() => {
 		if (isLogin) {
-			notification.success({
-				message: 'Success',
-				description:`Login is Success`,
-			});
-			dispatch(clearState());
-			navigate('/user');
+			notification.success({ message: 'Success', description: `Login is Success` });
+			setTimeout(() => {
+				LoginCheck();
+			}, 500);
 		}
-	}, [isError, isLogin]);
-
-	let validator = useRef(new SimpleReactValidator());
-
-	const handleSubmit = (e) => {
-		e.preventDefault(props);
+	}, [isLogin]);
+	//----
+	const [, forceUpdate] = React.useState();
+	let validator = React.useRef(new SimpleReactValidator());
+	validator.current.purgeFields();
+	const handleSubmit = () => {
 		if (validator.current.allValid()) {
-			let userData = {
-				Email: email,
-				Password: password,
-			};
-			dispatch(loginUser(userData));
+			if (formdata.rememberMe) {
+				localStorage.setItem('rememberedEmail', formdata.email);
+				localStorage.setItem('rememberedPassword', formdata.password);
+				localStorage.setItem('rememberedRememberMe', formdata.rememberMe);
+			} else {
+				localStorage.removeItem('rememberedEmail');
+				localStorage.removeItem('rememberedPassword');
+				localStorage.removeItem('rememberedRememberMe');
+			}
+			dispatch(loginUser(formdata));
+			validator.current.hideMessages();
+			forceUpdate(0);
 		} else {
 			validator.current.showMessages();
 			forceUpdate(1);
 		}
 	};
-
 	return (
 		<div className="login-sec-wrap py-5">
 			<Card className="mx-auto card-login mw-450" >
 				<Card.Body>
 					<div className="text-center">
-						<Image src={require('../assest/image/logo.png').default} width={200} />
+						<img alt='logo' src={require('../assest/image/logo.png')} width={50} />
 					</div>
 					<Card.Title as="h3" className="my-3 text-center"> LOGIN </Card.Title>
-					<Form onSubmit={handleSubmit}>
+					<div>
 						<div className='mb-3'>
 							<div className='form-label'> Email </div>
-							<Input className="antinput-bootstrap" value={email} onChange={e => setEmail(e.target.value)} />
-							{validator.current.message('email', email, 'required|email')}
+							<Input className="antinput-bootstrap" value={formdata.email} onChange={e => setFormdata({ ...formdata, email: e.target.value })} />
+							{validator.current.message('Email', formdata.email, 'required|email')}
 						</div>
 						<div className='mb-3'>
 							<div className='form-label'> Password </div>
-							<Input.Password className="antinput-bootstrap" value={password} onChange={e => setPassword(e.target.value)} />
-							{validator.current.message('field', password, 'required|min:6')}
+							<Input.Password className="antinput-bootstrap" value={formdata.password} onChange={e => setFormdata({ ...formdata, password: e.target.value })} />
+							{validator.current.message('Password', formdata.password, 'required|min:6')}
+						</div>
+						<div className='mb-3'>
+							<Checkbox checked={formdata.rememberMe} onChange={e => setFormdata({ ...formdata, rememberMe: e.target.checked })} >Remember me</Checkbox>
 						</div>
 						<div className="mb-3 text-center">
-							<AntButton htmlType="submit" type="primary" loading={isFetching} shape="round" size="large"> Login</AntButton>
+							<Button type="primary" loading={isFetchingOBJ['loginUser'] || false} disabled={isFetchingOBJ['loginUser'] || false} shape="round" size="large" onClick={handleSubmit}> Login</Button>
 						</div>
-					</Form>
+					</div>
 				</Card.Body>
 			</Card>
 		</div>
 	)
 }
-export default Login
+export default React.memo(LoginScreen) 

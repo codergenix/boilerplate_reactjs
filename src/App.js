@@ -1,12 +1,12 @@
-import React, { Component }  from 'react';
+import React from 'react';
 import Routes from './routes';
-
-export default class App extends Component {
-  render() {
-    return (
-      <Routes/>
-    );
-  }
+//---
+const Appscreen = () => {
+  return (
+    <Routes />
+  );
 }
+//--
+export default React.memo(Appscreen)
 
 

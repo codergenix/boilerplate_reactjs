@@ -1,0 +1,90 @@
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: $AthensGray;
+}
+::-webkit-scrollbar-thumb {
+    background: $gray;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $Emperor;
+}
+.srv-validation-message {
+    color: red;
+}
+
+.middle-content-notfound {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 41px);
+}
+.srv-validation-message {
+    color: $red;
+    font-size: 15px;
+}
+.authlayout {
+    .middle-content {
+        min-height: calc(100vh - 132px);
+        padding: 15px 0;
+    }
+}
+.pageloader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    font-size: 50px;
+    background-color: rgba($black, 0.8);
+}
+table {
+    &.thm-default {
+        font-size: 14px;
+        > :not(:first-child) {
+            border-top: 2px solid rgba($secondary, 0.4);
+        }
+        >thead {
+            background-color: rgba($secondary, 0.2);
+        }
+        tbody {
+            tr {
+                &.tr-successLight {
+                    background-color: rgba($success, 0.15);
+                }
+                &.tr-dangerLight {
+                    background-color: rgba($danger, 0.15);
+                }
+                tr.rowclick {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+/******** quill text editor ***********/
+.quill {
+    .ql-container{height:150px;}
+    &.h-430{
+        .ql-container{height:430px;}
+    }
+    &.h-350{
+        .ql-container{height:350px;}
+    }
+    &.h-315{
+        .ql-container{height:315px;}
+    }
+    &.h-225{
+        .ql-container{height:225px;}
+    }
+}
+/*=========
+ P A G E  
+===========*/
+
+

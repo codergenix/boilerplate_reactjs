@@ -1,0 +1,60 @@
+{
+    "root": true,
+    "extends": [
+        "eslint:recommended",
+        "react-app",
+        "react-app/jest"
+    ],
+    "rules": {
+        // JavaScript Core Rules
+        "eqeqeq": "off",
+        "no-cond-assign": "off",
+        "arrow-body-style": "off",
+        "no-console": "off",
+        "no-debugger": "warn",
+        "no-unused-expressions": "warn",
+        "no-param-reassign": "warn",
+        "no-prototype-builtins": "warn",
+        "no-labels": "warn",
+        "no-mixed-operators": "warn",
+        "no-new-func": "warn",
+        "no-loop-func": "warn",
+        "no-undef": "error",
+        "default-case": "warn",
+        "no-use-before-define": "warn",
+        "no-redeclare": "warn",
+        "array-callback-return": "warn",
+        "no-useless-escape": "warn",
+        "no-useless-concat": "warn",
+        "no-unused-vars": "warn",
+        "no-extra-semi": "warn",
+        "no-empty": "warn",
+        "func-name-matching": "warn",
+
+        // React Rules
+        "react-hooks/exhaustive-deps": "off",
+        "react-hooks/rules-of-hooks": "warn",
+        "react/jsx-no-target-blank": "warn",
+        "react/prop-types": "off",
+        "react/no-unescaped-entities": "off",
+        "react/no-string-refs": "warn",
+        "react/jsx-curly-brace-presence": "off",
+        "react/jsx-no-duplicate-props": "warn",
+        "react/jsx-props-no-spreading": "off",
+        "react/jsx-pascal-case": "warn",
+        "react/self-closing-comp": "warn",
+        "react/jsx-no-undef": "error",
+        "react/jsx-fragments": "warn",
+
+        // Accessibility Rules
+        "jsx-a11y/anchor-is-valid": "warn",
+        "jsx-a11y/no-distracting-elements": "off"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    }
+}

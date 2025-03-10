@@ -1,0 +1,193 @@
+/*** figure *****/
+img {
+    max-width: 100%;
+    &.rounded-circle {
+        padding: 2px;
+        box-shadow: 2px 3px 11px 0px rgba($primary,0.34);
+    }
+}
+.figure-circle {
+    border-radius: 100%;
+    object-fit: cover;
+}
+figure img {
+	max-width: 100%;
+	max-height: 100%;
+}
+/**** buttons ***/
+.btn {
+    padding:.2rem 0.9rem;
+    font-size:0.9rem;
+    border-radius:0;
+    &.btn-div{
+        cursor:default!important;
+    }
+    &:active:focus,
+    &:active,
+    &:focus,
+    &:hover {
+        box-shadow: none;
+        outline: none;
+    }
+    &.btn-primary {
+        font-size: 18px;
+        color: white;
+        border: none;
+        padding: 14px 35px;
+        font-weight: 500;
+        border-radius: 4px;
+        background: linear-gradient(90deg, #673ab7 0, #2196f3);
+        .ant-typography {
+            color: inherit;
+            line-height: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            .ant-typography-edit{color: inherit;}
+        }
+    }
+    &.btn-primary1 {
+        color: $white;
+        background-color: $primary;
+        border-color: $primary;
+        &.active,
+        &:hover {
+            color: $white;
+            background-color: $primaryhover;
+            border-color: $primaryhover;
+        }
+    }
+    &.btn-outline-primary1 {
+        color:$primary;
+        border-color: $primary;
+        &.active,
+        &:hover {
+            color: $white;
+            background-color: $primary;
+            border-color: $primary;
+        }
+    }
+    &.btn-secondary1 {
+        color: $white;
+        background-color: $secondary;
+        border-color: $secondary;
+        &.active,
+        &:hover {
+            color: $white;
+            background-color: $secondaryhover;
+            border-color: $secondaryhover;
+        }
+    }
+    &.btn-outline-secondary1 {
+        color:$secondary;
+        border-color: $secondary;
+        &.active,
+        &:hover {
+            color: $white;
+            background-color: $secondary;
+            border-color: $secondary;
+        }
+    }
+}
+/**** form controls ***/
+.form-label {
+  font-weight:600;  
+  color: $MineShaft;
+}
+.form-control {
+    height:calc(1.17rem + .5rem + 2px);
+    color:$Emperor;
+    border-radius:0.1rem;
+    border: 1px solid $AthensGray;
+    background: $white;
+    &-hide{
+      position: absolute;left:0;width: 0;height:0;overflow:hidden;  
+      opacity:0;  
+    }
+    &:focus {
+        border-color:$primary;
+        outline:0;
+        box-shadow: none;
+        &::placeholder{color:transparent;}
+        &::-webkit-input-placeholder{color:transparent;}
+        &::-moz-placeholder{color:transparent;}
+        &:-moz-placeholder{color:transparent;}
+    }
+    &::placeholder{opacity:0.7;}
+    &-plaintext {
+        color:$Emperor;
+        height:calc(2.17em + .65rem + 2px);
+    }
+}
+.form-right-icon{
+  position:relative;
+  >i{
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    display: block;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+}
+/*** card ****/
+.card {
+    border:0 solid transparent;
+    border-radius:0;
+    box-shadow:0 12px 23px 0 rgba($black, 0.04);
+    &.card-hover:hover{
+        box-shadow:0 12px 23px 0 rgba($black, 0.1);
+    }
+    .card-header {
+        border-bottom:1px solid $AthensGray;
+        background-color:transparent;
+        .breadcrumb{margin-bottom:6px;}
+    }
+    .card-title {
+        margin-bottom:0;
+        line-height:inherit;
+    }
+    .card-footer {
+        background-color: transparent;
+        border-top: 1px solid $AthensGray;
+    }
+    &.card-front{
+        height: 100%;
+        border-radius: 10px;
+        border: 1px solid #d4f0ff;
+        box-shadow: 0 3.4px 2.7px -30px rgba(0,0,0,.059),0 8.2px 8.9px -30px rgba(0,0,0,.071),0 25px 40px -30px rgba(0,0,0,.2);
+    }
+}
+/***** badge ********/
+.badge {
+	padding: 0.6em 0.9em;
+    font-size: 97%;
+    font-weight: 600;
+    border-radius: 3rem;
+    &-primary{background-color:$primary}
+    &-secondary{background-color:$secondary}
+    &-success{background-color:$success}
+    &-info{background-color:$info}
+    &-warning{background-color:$warning}
+    &-danger{background-color:$danger}
+    &-light{background-color:$light}
+    &-dark{background-color:$dark}
+}
+/***** Dropdown ********/
+.dropdown{
+    .dropdown-toggle{
+        border: none;
+    }
+    .dropdown-menu{
+        border: 0 solid transparent;
+        border-radius:.6rem;
+        box-shadow: 0 12px 23px 0 rgba($black,0.13);
+        .dropdown-item{
+            font-size: 13px;
+            &:active{
+                background-color:$primary;
+            }
+        }
+    }
+}
+/***** Dropdown ********/
+.modal-content{border-radius:1.25rem;}

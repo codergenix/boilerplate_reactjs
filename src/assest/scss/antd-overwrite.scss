@@ -1,0 +1,346 @@
+/*==============
+ant design controll
+=================*/
+
+.AntInputEment {
+    width: 100%;
+}
+
+.AntInputEmentHover {
+    border-color: $primary;
+    box-shadow: none;
+}
+
+.AntEditable {
+    height: calc(1.2rem + 0.5rem + 2px);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1;
+    border-radius: 0;
+    border: 1px solid $Alabaster;
+    background-color: $Alabaster;
+}
+:where(.css-dev-only-do-not-override-240cud) .ant,
+.ant {
+    &-table-wrapper{
+        font-family: $fontFamilyOpensans;
+        .ant-table{
+            font-family: $fontFamilyOpensans;
+        }
+    }
+    &-table{
+        font-family: $fontFamilyOpensans;
+    }
+    &-row{
+        font-family: $fontFamilyOpensans;
+    }
+    &-col{
+        font-family: $fontFamilyOpensans;
+    }
+    &-btn{
+        font-family: $fontFamilyOpensans;
+    }
+    &-input {
+        font-family: $fontFamilyOpensans;
+        @extend .AntInputEment;
+
+        &.ant-editable {
+            @extend .AntEditable;
+        }
+
+        &-sm {
+            height: calc(0.85em + 0.85rem + 2px);
+            padding: 0.25rem 0.8rem;
+            font-size: 0.8rem;
+            line-height: 0.8;
+            border-radius: 0;
+        }
+
+        &:focus,
+        &-focused {
+            @extend .AntInputEmentHover;
+        }
+
+        &-textarea-show-count::after {
+            margin: 4px 0 7px;
+            font-size: 85%;
+        }
+
+        &-affix-wrapper {
+            @extend .AntInputEment;
+
+            >input.ant-input {
+                padding: 0;
+                border: none;
+                outline: none;
+                height: auto;
+            }
+
+            &:not(.ant-input-affix-wrapper-disabled):hover,
+            &:not(.ant-input-affix-wrapper-disabled):focus {
+                @extend .AntInputEmentHover;
+            }
+        }
+
+        &-number {
+            @extend .AntInputEment;
+
+            >input.ant-input {
+                padding: 0;
+                border: none;
+                outline: none;
+                height: auto;
+            }
+
+            &-handler-wrap {
+                right: 9px;
+            }
+
+            &.ant-editable {
+                @extend .AntEditable;
+
+                .ant-input-number-input {
+                    height: auto;
+                }
+            }
+
+            &-focused {
+                @extend .AntInputEmentHover;
+            }
+        }
+    }
+
+    &-select {
+        font-family: $fontFamilyOpensans;
+        width: 100%;
+
+        &.ant-editable {
+            .ant-select-selector {
+                @extend .AntEditable;
+
+                .ant-select-selection {
+
+                    &-item,
+                    &-placeholder {
+                        line-height: 1.4rem;
+                    }
+                }
+            }
+        }
+
+        &:not(.ant-select-customize-input) {
+            .ant-select-selector {
+                @extend .AntInputEment;
+
+                .ant-select-selection-search-input {
+                    height: 100%;
+                }
+            }
+        }
+
+        &-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) {
+            .ant-select-selector {
+                @extend .AntInputEmentHover;
+            }
+        }
+    }
+
+    &-picker {
+        font-family: $fontFamilyOpensans;
+        @extend .AntInputEment;
+
+        &.ant-editable {
+            @extend .AntEditable;
+        }
+
+        &:focus,
+        &-focused {
+            @extend .AntInputEmentHover;
+        }
+    }
+
+    //-------ant modal
+    &-modal {
+        font-family: $fontFamilyOpensans;
+        top: 0;
+        padding-bottom: 24px;
+        padding-top: 24px;
+
+        &-close-x {
+            width: 35px;
+            height: 35px;
+            font-size: 15px;
+            line-height: 33px;
+            color: $white;
+            background-color: $secondary;
+            &:hover {
+                background-color: $secondaryhover;
+            }
+        }
+
+        &-header {
+            padding: 7px 24px;
+        }
+
+        &-body {
+            max-height: calc(100vh - 126px);
+            overflow-y: auto;
+        }
+    }
+
+    //-------ant avatar
+    &-avatar {
+        font-family: $fontFamilyOpensans;
+        &-group {
+            vertical-align: top;
+        }
+
+        &-add {
+            color: rgb(245, 106, 0);
+            background-color: rgb(253, 227, 207);
+        }
+
+        &.bg-default {
+            background-color: $primary;
+        }
+    }
+
+    //-------ant list
+    &-list {
+        font-family: $fontFamilyOpensans;
+        &-item {
+            &.hovered {
+                &:hover {
+                    background-color: $Alabaster;
+                }
+            }
+        }
+
+        &.list-nodata-none {
+            .ant-list-empty-text {
+                display: none;
+            }
+        }
+    }
+    //-------ant checkbox
+    &-checkbox-checked {
+        .ant-checkbox-inner {
+            background-color: $primary;
+            border-color: $primary;
+        }
+    }
+
+    &-radio-checked {
+        .ant-radio-inner {
+            border-color: $primary;
+
+            &::after {
+                background-color: $primary;
+            }
+        }
+    }
+
+    //-------ant tab
+    &-tabs {
+        font-family: $fontFamilyOpensans;
+        &-tab {
+
+            &-btn:hover,
+            &-btn:focus {
+                color: $primary;
+                text-shadow: none;
+            }
+
+            &.ant-tabs-tab-active {
+                .ant-tabs-tab-btn {
+                    color: $primary;
+                    text-shadow: none;
+                }
+            }
+        }
+
+        &-ink-bar {
+            background: $primary;
+        }
+    }
+
+    &-card {
+        font-family: $fontFamilyOpensans;
+        &-small {
+            >.ant-card-body {
+                padding: 8px 11px;
+            }
+        }
+    }
+
+    &-steps {
+        font-family: $fontFamilyOpensans;
+        overflow-x: auto;
+
+        &-dot {
+            .ant-steps-item-content {
+                width: 130px;
+            }
+
+            .ant-steps-item-icon {
+                margin-left: 60px;
+            }
+
+            .ant-steps-item-process {
+                .ant-steps-item-icon {
+                    top: 0;
+                    width: 8px;
+                    height: 8px;
+                    line-height: 8px;
+                }
+            }
+
+            &.ant-steps-small {
+                .ant-steps-item-content {
+                    width: 130px;
+                }
+
+                .ant-steps-item-icon {
+                    margin-left: 60px;
+                }
+
+                .ant-steps-item-process {
+                    .ant-steps-item-icon {
+                        top: 0;
+                        width: 8px;
+                        height: 8px;
+                        line-height: 8px;
+                    }
+                }
+            }
+        }
+    }
+
+    &-collapse {
+        font-family: $fontFamilyOpensans;
+        background-color: transparent;
+        border: none;
+
+        >.ant-collapse-item {
+            margin-bottom: 16px;
+            background-color: rgba($Alabaster, .6);
+            border: 1px solid $Alto;
+        }
+    }
+    &-typography{
+        font-family: $fontFamilyOpensans;
+        &.editable{
+            border: 1px dashed #b3b3b3;
+            padding: 4px;
+        }
+    }
+}
+
+textarea {
+    &.ant-input {
+        &.ant-editable {
+            height: auto;
+            line-height: 1.8;
+        }
+    }
+}

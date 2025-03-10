@@ -1,7 +1,7 @@
-const API_URL = "http://localhost:3030/"; // [ api pc url or IP ]
-const API_ENDPOINT = `${API_URL}v1/`;
-const API_HEADER = { headers: { 'Authorization': `${localStorage.getItem('VUEtoken')}`,'Content-Type' : 'application/json' } }
-
-const CONFIG = { API_ENDPOINT, API_HEADER };
-
+// const URL = "http://localhost:3030"; // local pc
+const URL = "http://192.168.29.101:3061"; // dev server bhavesh  pc http://192.168.29.101:3061/index.html
+const API_ENDPOINT = `${URL}/api/`;
+//----
+const CONFIG = { API_ENDPOINT,URL };
+//---
 export default CONFIG;
